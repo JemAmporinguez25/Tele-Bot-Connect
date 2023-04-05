@@ -1,0 +1,28 @@
+from flask import Flask, request
+import telegram
+
+app = Flask(__name__)
+
+# Replace with your Telegram bot token
+TOKEN = 'YOUR_TELEGRAM_BOT_TOKEN'
+
+# Create a Telegram bot instance
+bot = telegram.Bot(token=TOKEN)
+
+# Define the Flask route for receiving webhooks
+@app.route('/webhook', methods=['POST'])
+def receive_webhook():
+    # Get the data from the incoming webhook
+    data = request.json
+
+    # Extract relevant information from the data
+    # Adjust this part based on the structure of the incoming webhook data
+    message = data.get('message', {}).get('text', '')
+
+    # Send the extracted message to the Telegram bot
+    bot.send_message(chat_id='@your_telegram_channel', text=message)
+
+    return 'Webhook received', 200
+
+if __name__ == '__main__':
+    app.run(debug=True)
